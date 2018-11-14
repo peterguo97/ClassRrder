@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +14,22 @@
     <script src="/static/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/static/js/bootstrap-datetimepicker.zh-CN.js"></script>
 </head>
+
 <body>
     <h1>请输入搜索地点</h1>
     <form action="/search" method="POST">
         {{range $index, $elem := .Pages}}
-            <label>
-                <input type="radio" name="selectBuilding" value={{$elem.Id}}>{{$elem.Name}}</label>
-            </label>
+        <label>
+            <input type="radio" name="selectBuilding" value={{$elem.Id}}>{{$elem.Name}}</label>
+        </label>
         {{end}}
         <div class="input-append date form_datetime" id="datetimepicker">
             <label for="">日期选择：</label>
-            <input class="span2" size="16" type="text" name="datatime" readonly>
+            <input class="span2" size="16" type="text" name="datetime" readonly>
             <span class="add-on"><i class="icon-th"></i></span>
         </div>
         <fieldset class="form-group">
-            <label for="exampleSelect1">请选择教室占用时间</label>
+            <label for="exampleSelect1">请选择教室占用时间：</label>
             <select class="form-control" name="classtiming">
                 <option value="1">第1节</option>
                 <option value="2">第2节</option>
@@ -36,17 +38,18 @@
                 <option value="5">第5节</option>
             </select>
         </fieldset>
-        <input type="submit" value="搜索"> 
+        <input type="submit" value="搜索">
     </form>
 </body>
 <script>
-    $('#datetimepicker').datetimepicker({
-        language: 'zh-CN',//显示中文
-        format: 'yyyy-mm-dd',//显示格式
-        minView: "month",//设置只显示到月份
-        initialDate: new Date(),//初始化当前日期
-        autoclose: true,//选中自动关闭
-        todayBtn: true//显示今日按钮
-    })
+$('#datetimepicker').datetimepicker({
+    language: 'zh-CN', //显示中文
+    format: 'yyyy-mm-dd', //显示格式
+    minView: "month", //设置只显示到月份
+    initialDate: new Date(), //初始化当前日期
+    autoclose: true, //选中自动关闭
+    todayBtn: true //显示今日按钮
+})
 </script>
+
 </html>

@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"fmt"
-	"test/models"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"strconv"
+	"test/models"
 )
 
 type SearchController struct {
@@ -24,7 +24,18 @@ func (this *SearchController) Get() {
 }
 
 func (this *SearchController) Post() {
-	fmt.Println(this.GetString("datatime"))
-	fmt.Println(this.GetString("classtiming"))
-	this.TplName = "search.html"
+	orm.Debug = true
+	o := orm.NewOrm()
+	o.Using("default")
+	var rooms []*models.Room
+	building := this.GetString("selectBuilding")
+	mybuilding, _ := strconv.Atoi(building)
+	datetime := this.GetString("datetime")
+	classtiming := this.GetString("classtiming")
+	o.QueryTable("room").Filter("Build", mybuilding).RelatedSel().All(&rooms)
+	for _, v := range rooms {
+		fmt.Println(v.Id)
+	}
+	fmt.Println(building, datetime, classtiming)
+	this.TplName = "result.html"
 }
