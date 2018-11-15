@@ -1,8 +1,8 @@
 # 忽略配置文件
-# conf/
+conf/
 
-# test
+test
 
-# models/
+models/
 
-# main.go
+main.go

@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"strconv"
 	"test/models"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 type SearchController struct {
@@ -33,9 +34,7 @@ func (this *SearchController) Post() {
 	datetime := this.GetString("datetime")
 	classtiming := this.GetString("classtiming")
 	o.QueryTable("room").Filter("Build", mybuilding).RelatedSel().All(&rooms)
-	for _, v := range rooms {
-		fmt.Println(v.Id)
-	}
+	this.Data["json"] = &rooms
 	fmt.Println(building, datetime, classtiming)
-	this.TplName = "result.html"
+	this.ServeJSON()
 }
