@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"test/models"
+	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -28,13 +29,20 @@ func (this *SearchController) Post() {
 	orm.Debug = true
 	o := orm.NewOrm()
 	o.Using("default")
+	const shortForm = "2018-11-11"
 	var rooms []*models.Room
 	building := this.GetString("selectBuilding")
 	mybuilding, _ := strconv.Atoi(building)
 	datetime := this.GetString("datetime")
 	classtiming := this.GetString("classtiming")
+	t, _ := time.Parse(shortForm, datetime)
+	room := new(models.OrderRoom)
+
 	o.QueryTable("room").Filter("Build", mybuilding).RelatedSel().All(&rooms)
-	this.Data["json"] = &rooms
+
+	o.QueryTable("order_room").Filter("Build", mybuilding).Filter("Orderdate", t).One(room)
+	fmt.Println(room)
+	this.Data["Rooms"] = rooms
 	fmt.Println(building, datetime, classtiming)
-	this.ServeJSON()
+	this.TplName = "search.html"
 }

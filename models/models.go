@@ -33,7 +33,7 @@ type OrderRoom struct {
 	Id          int
 	Build       *Building `orm:"rel(fk)"`
 	Room        *Room     `orm:"rel(fk)"`
-	HasOrdered  bool      `orm:"default(true)"`
+	HasOrdered  bool      `orm:"default(false)"`
 	ClassTiming uint8     `orm:"defalut(0)"`
 	OrderDate   time.Time `orm:"type(date)"`
 }
