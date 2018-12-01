@@ -72,7 +72,7 @@ func (this *OrderController) Post() {
 			Room:      &models.Room{Id: or.Room},
 			OrderDate: t,
 		}
-		class.Id = timing[:]
+		class.Id = timing[1:]
 		o.Insert(room)
 	}
 	this.Data["json"] = class
