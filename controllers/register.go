@@ -14,7 +14,7 @@ type RegisterController struct {
 }
 
 func (r *RegisterController) Get() {
-	r.TplName = "register.min.html"
+	r.TplName = "zhuce.html"
 }
 
 func (r *RegisterController) Post() {
@@ -27,8 +27,9 @@ func (r *RegisterController) Post() {
 		fmt.Printf("the len of the pass %d\n", len(pass))
 		user := &models.User{Name: username, Pass: pass}
 		o.Insert(user)
+		r.Ctx.WriteString("<h1>注册成功</h1>")
 	} else {
+		r.Ctx.WriteString("<h1>The user is existed!</h1>")
 		fmt.Println("The user is existed")
 	}
-	r.TplName = "register.min.html"
 }

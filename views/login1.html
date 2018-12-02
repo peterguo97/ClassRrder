@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Beego</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link rel="stylesheet" type="text/css" href="static/css/common.css">
+</head>
+
+<body>
+  <header>
+    <h1 class="logo">教室预约系统</h1>
+    <div class="description">
+      用户登录
+    </div>
+    <div>
+      <form action="/login" method="POST">
+        <p>
+          <label for="">用户名
+            <input type="text" name="username" />
+          </label>
+        </p>
+    		<p>
+          <label for="">密码
+            <input type="password" name="userpass" />
+          </label>
+        </p>
+    		<button type="submit">提交</button>
+    	</form>
+    </div>
+  </header>
+  <div class="backdrop"></div>
+  <script src="/static/js/reload.min.js"></script>
+</body>
+</html>

@@ -1,38 +1,18 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>Beego</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css" href="static/css/common.css">
-</head>
-
-<body>
-  <header>
-    <h1 class="logo">Welcome to Beego</h1>
-    <div class="description">
-      Beego is a simple & powerful Go web framework which is inspired
-      by tornado and sinatra.
-    </div>
-    <div>
-    	<form action="/login" method="POST">
-    		<input type="text" name="username" />
-    		<input type="password" name="userpass" />
-    		<button type="submit">提交</button>
-    	</form>
-    </div>
-  </header>
-  <footer>
-    <div class="author">
-      Official website:
-      <a href="http://{{.Website}}">{{.Website}}</a> /
-      Contact me:
-      <a class="email" href="mailto:{{.Email}}">{{.Email}}</a>
-    </div>
-  </footer>
-  <div class="backdrop"></div>
-
-  <script src="/static/js/reload.min.js"></script>
-</body>
-</html>
->
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Login</title>  
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css"/>  
+</head>  
+<body>  
+    <div id="login">  
+        <h1>教室预约登录系统</h1>  
+        <form method="post" action="/login">  
+            <input type="text" required="required" placeholder="用户名" name="username"></input>  
+            <input type="password" required="required" placeholder="密码" name="userpass"></input>  
+            <button class="but" type="submit">登录</button>
+        </form>  
+    </div>  
+</body>  
+</html>  
