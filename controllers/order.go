@@ -18,10 +18,15 @@ func (this *OrderController) Post() {
 	orm.Debug = true
 	o := orm.NewOrm()
 	o.Using("default")
+	qs := o.QueryTable("OrderRoom")
 	type order struct {
 		Build    int
 		Room     int
 		Datetime string
+	}
+
+	type classes struct {
+		Id []int `json:"id"`
 	}
 
 	var or order
@@ -36,19 +41,40 @@ func (this *OrderController) Post() {
 	} else {
 		fmt.Println(t)
 	}
-	var room models.OrderRoom
-	exist := o.QueryTable("OrderRoom").Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t).Exist()
-	if exist {
+	orderqs := qs.Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t)
+	timing := [6]int{0, 1, 2, 3, 4, 5}
+	class := new(classes)
+	if orderqs.Exist() {
+		var myclass []*models.OrderRoom
 		fmt.Println("found it")
+		orderqs.All(&myclass, "ClassTiming")
+		type st struct {
+			start int
+			end   int
+		}
+		myst := &st{
+			start: 1,
+			end:   0,
+		}
+		var res = make([]int, 0)
+		for _, item := range myclass {
+			myst.end = int(item.ClassTiming)
+			fmt.Println(myst.start, myst.end)
+			res = append(res, timing[myst.start:myst.end]...)
+			myst.start = myst.end + 1
+		}
+		res = append(res, timing[myst.start:]...)
+		fmt.Println(res)
+		class.Id = res
 	} else {
 		room := &models.OrderRoom{
 			Build:     &models.Building{Id: or.Build},
 			Room:      &models.Room{Id: or.Room},
 			OrderDate: t,
 		}
+		class.Id = timing[1:]
 		o.Insert(room)
-		fmt.Println("cannot found it")
 	}
-	this.Data["json"] = &room
+	this.Data["json"] = class
 	this.ServeJSON()
 }
