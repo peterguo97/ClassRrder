@@ -41,13 +41,12 @@ func (this *OrderController) Post() {
 	} else {
 		fmt.Println(t)
 	}
-	orderqs := qs.Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t)
-	timing := [6]int{0, 1, 2, 3, 4, 5}
 	class := new(classes)
-	if orderqs.Exist() {
-		var myclass []*models.OrderRoom
+	var myclass []*models.OrderRoom
+	_, err1 := qs.Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t).All(&myclass, "ClassTiming")
+	timing := [6]int{0, 1, 2, 3, 4, 5}
+	if err1 != orm.ErrNoRows {
 		fmt.Println("found it")
-		orderqs.All(&myclass, "ClassTiming")
 		type st struct {
 			start int
 			end   int

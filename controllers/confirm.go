@@ -33,46 +33,43 @@ func (c *ConfirmController) Post() {
 	var or Order
 	data := c.Ctx.Input.RequestBody
 	err := json.Unmarshal(data, &or)
-	fmt.Println(or.Timing)
 	if err != nil {
 		fmt.Println(err)
 	}
 	t, err := time.Parse("2006-01-02", or.Datetime)
 	if err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println(t)
 	}
 	res := new(models.OrderRoom)
-	qs := o.QueryTable("OrderRoom").Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t).Filter("ClassTiming", or.Timing)
-	fmt.Println(res)
-	qs.One(res)
-	messsge := new(msg)
-	if !qs.Exist() || !res.HasOrdered {
+	myerr := o.QueryTable("OrderRoom").Filter("Build", or.Build).Filter("Room", or.Room).Filter("OrderDate", t).Filter("ClassTiming", or.Timing).One(res)
+	message := new(msg)
+	if myerr == orm.ErrNoRows || !res.Waiting {
 		mydate := &models.OrderRoom{
 			Build:       &models.Building{Id: or.Build},
 			Room:        &models.Room{Id: or.Room},
 			OrderDate:   t,
 			ClassTiming: or.Timing,
-			HasOrdered:  true,
+			Waiting:     true,
 		}
-		if !qs.Exist() {
+		if myerr == orm.ErrNoRows {
 			_, err := o.Insert(mydate)
 			if err != nil {
-				messsge.Err = "插入出错"
+				message.Err = "插入出错"
+			} else {
+				message.Success = "insert success"
 			}
 		} else {
-			res.HasOrdered = true
+			res.Waiting = true
 			_, err := o.Update(res)
 			if err != nil {
-				messsge.Err = "update error"
+				message.Err = "update error"
+			} else {
+				message.Success = "update success"
 			}
 		}
-		messsge.Success = "1"
-
 	} else {
-		messsge.Err = "exist"
+		message.Err = "exist"
 	}
-	c.Data["json"] = messsge
+	c.Data["json"] = message
 	c.ServeJSON()
 }

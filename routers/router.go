@@ -13,4 +13,5 @@ func init() {
 	beego.Router("/register", &controllers.RegisterController{})
 	beego.Router("/order", &controllers.OrderController{})
 	beego.Router("/confirm", &controllers.ConfirmController{})
+	beego.Router("/waiting", &controllers.WaitingController{})
 }
